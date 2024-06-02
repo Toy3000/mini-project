@@ -1,10 +1,61 @@
+<!--В index.html
+1 отримати масив об'єктів з endpoint`а https://jsonplaceholder.typicode.com/users
+2 Вивести id,name всіх user в index.html. Окремий блок для кожного user.
+3 Додати кожному блоку кнопку/посилання , при кліку на яку відбувається перехід  на сторінку
+user-details.html, котра має детальну інфорацію про об'єкт на який клікнули-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <title>Users</title>
+    <style>
+        /*index.html - всі блоки з user - по 2 в рядок. кнопки/аосилвння розташувати
+        під інформацією про user.*/
+        .flex{
+            width: 97vw;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+        .user-block {
+            width: 40vw;
+            height: 150px;
+            margin: 5px;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+        }
+        .user-block a {
+            display: block;
+            margin-top: 10px;
+            text-align: center;
+            background-color: #007BFF;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
-$END$
+<div id="users" class="flex"></div>
+<script>
+    fetch('https://jsonplaceholder.typicode.com/users')
+        .then(response => response.json())
+        .then(users => {
+            const usersDiv = document.getElementById('users');
+            users.forEach(user => {
+                const userBlock = document.createElement('div');
+                userBlock.className = 'user-block';
+                userBlock.innerHTML = `
+                        <h2>${user.name}</h2>
+                        <p>ID: ${user.id}</p>
+                        <a href="user-details.html?id=${user.id}">Details</a>
+                    `;
+                usersDiv.appendChild(userBlock);
+            });
+        });
+</script>
 </body>
 </html>
